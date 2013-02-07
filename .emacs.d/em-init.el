@@ -1,0 +1,15 @@
+(require 'server)
+(defun save-buffer-server-edit ()
+  (interactive)
+  (progn
+    (save-buffer)
+    (server-edit)))
+(defun em-local-set-key ()
+  (local-set-key (kbd "C-x C-c") 'save-buffer-server-edit))
+(add-hook 'server-visit-hook 'em-local-set-key)
+(defun em-back-client-tmux ()
+  (shell-command
+   "tmux select-window -t \\\`cat $CLIENT_WINDOW\\\`"))
+(add-hook 'server-done-hook 'em-back-client-tmux)
+(server-start)
+(provide 'em-init)

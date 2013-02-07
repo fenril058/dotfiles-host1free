@@ -1,0 +1,6 @@
+[submodule ".emacs.d/public_repos/emacs-emamux"]
+	path = .emacs.d/public_repos/emacs-emamux
+	url = https://github.com/syohex/emacs-emamux
+[submodule ".zsh/zaw"]
+	path = .zsh/zaw
+	url = https://github.com/zsh-users/zaw
