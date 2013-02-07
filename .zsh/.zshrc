@@ -100,6 +100,8 @@ ls_abbrev() {
 alias pu=pushd po=popd dirs='dirs -v'
 alias grep='grep --color'
 
+alias g='git'
+
 ## cdr system stuff.
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
