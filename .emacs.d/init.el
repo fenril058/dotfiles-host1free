@@ -51,8 +51,10 @@
              (cons tramp-file-name-regexp nil))
 
 ;; key-bind
+;; (defalias 'exit 'save-buffers-kill-emacs)
+(defalias 'exit 'save-buffers-kill-terminal)
 (global-unset-key (kbd "C-x C-c"))
-(global-set-key (kbd "C-x C-c") 'kill-this-buffer)
+;; (global-set-key (kbd "C-x C-c") 'kill-this-buffer)
 ;; (global-set-key (kbd "C-h") 'delete-backward-char)
 (keyboard-translate ?\C-h ?\C-?)
 (delete-selection-mode t)
@@ -127,8 +129,6 @@ C-uをつけるとウィンドウを閉じる。"
 (require 'server)
 (unless (server-running-p)
   (server-start))
-;; (defalias 'exit 'save-buffers-kill-emacs)
-(defalias 'exit 'save-buffers-kill-terminal)
 
 ;; tmux
 (require 'emamux)
