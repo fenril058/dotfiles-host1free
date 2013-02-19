@@ -277,7 +277,16 @@ C-uをつけるとウィンドウを閉じる。"
 
 ;; key-combo
 (require 'key-combo)
-(key-combo-mode 1)
+(defvar key-combo-eshell-default
+  '(("C-a" .  (eshell-bol
+              beginning-of-buffer
+              key-combo-return))
+    ("C-e" .  (move-end-of-line
+              end-of-buffer
+              key-combo-return))))(key-combo-mode 1)
+(key-combo-define-hook 'eshell-mode-hook
+                       'key-combo-eshell-load-default
+                       key-combo-eshell-default)
 (key-combo-load-default)
 (key-combo-define-global (kbd "{ RET") "{\n`!!'\n}")
 (key-combo-define-global (kbd "{ C-j") "{\n`!!'\n}")
