@@ -5,4 +5,4 @@ auto-save-list/*
 url/*
 .zcompdump
 .chpwd-recent-dirs
-
+.emacs.d/tramp
