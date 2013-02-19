@@ -18,6 +18,7 @@
         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
             (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "elisp" "public_repos" "local-elisp")
+(add-to-list 'load-path "~/eev-current/")
 
 ;; auto-install
 (require 'auto-install)
@@ -181,6 +182,78 @@ C-uをつけるとウィンドウを閉じる。"
 (require 'lispxmp)
 (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp)
 
+;;; eshell
+(setq eshell-cmpl-ignore-case t)
+(progn
+  (defmacro eval-after-load* (name &rest body)
+    (declare (indent 1))
+    `(eval-after-load ,name '(progn ,@body)))
+  (defun eshell-disable-unix-command-emulation ()
+    ;;  (eval-after-load* "em-ls"
+    ;;    (fmakunbound 'eshell/ls))
+    (eval-after-load* "em-unix"
+		      (mapc 'fmakunbound '(eshell/basename
+					   eshell/cat
+					   eshell/cp
+					   eshell/date
+					   eshell/diff
+					   eshell/dirname
+					   eshell/du
+					   ;; eshell/egrep
+					   ;; eshell/fgrep
+					   eshell/grep
+					   eshell/info
+					   eshell/ln
+					   eshell/locate
+					   eshell/make
+					   eshell/man
+					   eshell/mkdir
+					   eshell/mv
+					   eshell/occur
+					   eshell/rm
+					   eshell/rmdir
+					   ;; eshell/glimpse
+					   eshell/agrep
+					   eshell/su
+					   eshell/sudo
+					   eshell/time))))
+  (eshell-disable-unix-command-emulation))
+(require 'esh-myparser)
+
+;;; eev 
+(require 'eev-all)
+(require 'em-dirs)
+(global-set-key (kbd "C-c e e") 'eek-eval-sexp-eol)
+
+(defun eeeshell (s &optional e)
+  (interactive "r")
+  (eev s e)
+  (eepitch-eshell)
+  (eepitch-line ". $EE"))
+(setq eepitch-code '(eshell))
+(setq eeb-defaults '(eeeshell ee-delimiter-hash nil t t))
+(eeb-define 'eeeshell-bounded 'eeeshell 'ee-delimiter-hash nil t t)
+(global-set-key (kbd "<f8>") 'eepitch-this-line)
+
+(defun eshell/readstr (varname &optional default)
+  "文字列を入力させて変数VARNAMEに記憶する。デフォルト値も指定できる。"
+  (set (intern varname)
+       (read-string (format "%s%s: " varname
+                            (if default (format " (default: %s)" default) ""))
+                    nil nil default)))
+(defun eshell/readfncd (varname)
+  "ファイル名を入力させて変数VARNAMEに記憶し、そのディレクトリに移動する。"
+  (let ((fn (read-file-name (format "%s: " varname))))
+    (eshell/pushd (file-name-directory fn))
+    (set (intern varname) (file-name-nondirectory fn))))
+(defun eshell/readfn (varname)
+  "ファイル名を入力させて変数VARNAMEに記憶する。"
+  (set (intern varname)
+       (file-relative-name (read-file-name (format "%s: " varname)))))
+(defun eshell/readdir (varname)
+  "ディレクトリ名を入力させて変数VARNAMEに記憶する。"
+  (set (intern varname) (read-directory-name (format "%s: " varname))))
+
 ;; popwin
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
@@ -189,7 +262,7 @@ C-uをつけるとウィンドウを閉じる。"
 
 ;; junk
 (require 'open-junk-file)
-(setq open-junk-file-format "~/junk/%Y/%m-%d-%H%M%S.")
+(setq open-junk-file-format "~/junk/%Y/%Y-%m-%d-%H%M%S.")
 (global-set-key (kbd "C-c z") 'open-junk-file)
 
 ;; sequential-command
