@@ -25,7 +25,7 @@ colors
 
 # export PROMPT='%F{red}%K{white}%B%n {%~} %%%k %b%f'
 nprom () {
-    PROMPT=%(?|%F{red}|%18(?|%F{red}|%F{yellow}))"%B%n%f:%F{green}%~%f%F{red}%%%b%f "
+    PROMPT=%(?|%F{red}|%20(?|%F{red}|%F{yellow}))"%B%n%f:%F{green}%~%f%F{red}%%%b%f "
     }
 nprom
 
